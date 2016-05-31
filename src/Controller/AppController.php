@@ -14,8 +14,10 @@
  */
 namespace App\Controller;
 
+use App\Model\Entity\User;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use Cake\Network\Exception\ForbiddenException;
 
 /**
  * Application Controller
@@ -43,6 +45,36 @@ class AppController extends Controller
 
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
+        $this->loadComponent('Csrf');
+
+        $this->loadComponent('Auth', [
+            'authError' => __("Je hebt geen toegang om deze locatie te bezoeken, of je moet ingelogd zijn!"),
+            'authorize' => 'Interno',
+            'unauthorizedRedirect' => '/',
+            'prefix' => false,
+            'loginRedirect' => [
+                'controller' => 'Pages',
+                'action' => 'dashboard',
+                'prefix' => false
+            ],
+            'loginAction' => [
+                'controller' => 'users',
+                'action' => 'login',
+                'prefix' => false
+            ],
+            'logoutRedirect' => [
+                'controller' => '/'
+            ],
+        ]);
+
+        if ($this->Auth->user()) {
+            $user = new User($this->Auth->user());
+            $this->set('user', $user);
+            if ($this->Auth->user('primary_role') == 3) {
+                $this->Flash->error(__('Je bent verbannen!'));
+                throw new ForbiddenException('Je bent verbannen');
+            }
+        }
     }
 
     /**

@@ -46,14 +46,10 @@ Router::scope('/', function (RouteBuilder $routes) {
     /**
      * Here, we are connecting '/' (base path) to a controller called 'Pages',
      * its action called 'display', and we pass a param to select the view file
-     * to use (in this case, src/Template/Pages/home.ctp)...
+     * to use (in this case, src/Template/Pages/landing.ctp)...
      */
-    $routes->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
+    $routes->connect('/', ['controller' => 'Pages', 'action' => 'landing', 'home']);
 
-    /**
-     * ...and connect the rest of 'Pages' controller's URLs.
-     */
-    $routes->connect('/pages/*', ['controller' => 'Pages', 'action' => 'display']);
 
     /**
      * Connect catchall routes for all controllers.
@@ -71,6 +67,10 @@ Router::scope('/', function (RouteBuilder $routes) {
      * You can remove these routes once you've connected the
      * routes you want in your application.
      */
+    $routes->fallbacks('DashedRoute');
+});
+
+Router::prefix('student', function(RouteBuilder $routes){
     $routes->fallbacks('DashedRoute');
 });
 

@@ -1,1 +1,12 @@
-<div class="message error" onclick="this.classList.add('hidden');"><?= h($message) ?></div>
+<script>
+    $.amaran({
+        'theme': 'colorful',
+        'content': {
+            bgcolor: '#d9534f',
+            color: '#fff',
+            message: '<?= h($message) ?>'
+        },
+        'position': 'top right',
+        'outEffect': 'slideRight'
+    });
+</script>

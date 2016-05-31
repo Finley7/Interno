@@ -12,13 +12,15 @@
  * @since     0.2.9
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-namespace App\Controller;
+namespace App\Controller\Student;
 
 use Cake\Core\Configure;
+use Cake\Mailer\Email;
 use Cake\Network\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
-use Cake\Mailer\Email;
 use Cake\Event\Event;
+
+use App\Controller\AppController;
 
 /**
  * Static content controller
@@ -29,32 +31,10 @@ use Cake\Event\Event;
  */
 class PagesController extends AppController
 {
-    public function beforeFilter(Event $event)
+
+    public function dashboard()
     {
-        $this->Auth->allow(['landing']);
+        $this->set('title', 'Studenten dashboard');
     }
 
-    public function landing()
-    {
-        if(!is_null($this->Auth->user()))
-        {
-            return $this->redirect(['action' => 'check', $this->Auth->user('id')]);
-        }
-
-        $this->set('title', 'Communicatieplatform voor stage en bedrijven');
-    }
-
-    public function check($id)
-    {
-        $this->loadModel('Users');
-
-        $user = $this->Users->get($id, ['contain' => 'PrimaryRole']);
-
-        if(is_null($user)) {
-            throw new notFoundException();
-        }
-
-        return $this->redirect(['controller' => 'Pages', 'action' => 'dashboard', 'prefix' => $user->primary_role->prefix]);
-
-    }
 }

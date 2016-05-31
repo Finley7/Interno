@@ -1,7 +1,15 @@
 <?php
-$class = 'message';
-if (!empty($params['class'])) {
-    $class .= ' ' . $params['class'];
-}
+$class = 'alert alert-info';
 ?>
-<div class="<?= h($class) ?>"><?= h($message) ?></div>
+<script>
+    $.amaran({
+        'theme': 'colorful',
+        'content': {
+            bgcolor: '#d9edf7',
+            color: '#31708f',
+            message: '<?= h($message) ?>'
+        },
+        'position': 'top right',
+        'outEffect': 'slideRight'
+    });
+</script>
