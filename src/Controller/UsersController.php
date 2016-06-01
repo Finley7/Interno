@@ -51,46 +51,20 @@ class UsersController extends AppController
             $this->Flash->error(__('Ongeldige gebruikersnaam/wachtwoord combinatie!'));
         }
         $this->set('title', 'Aanmelden');
+
     }
 
-    public function add()
+    public function logout()
     {
-        $user = $this->Users->newEntity([
-            'associated' => [
-                'Roles',
-            ]
-        ]);
-
-        $this->loadModel('Schools');
-        $schools = $this->Schools->find('list');
-
-        if ($this->request->is('post')) {
-            $this->request->data['roles']['_ids'] = [5];
-            $this->request->data['username'] = h($this->request->data['username']);
-            $this->request->data['primary_role'] = 5;
-            $user = $this->Users->patchEntity($user, $this->request->data, [
-                'associated' => [
-                    'Roles',
-                ]
-            ]);
-            if ($this->Users->save($user, [
-                'associated' => [
-                    'Roles',
-                ]
-            ])
-            ) {
-                $this->Flash->success(__('Het account is aangemaakt. Je kunt nu inloggen!'));
-                return $this->redirect([
-                    'controller' => 'users',
-                    'action' => 'login'
-                ]);
-            } else {
-                $this->Flash->error(__('Er is iets fout gegaan tijdens het registreren van het account!'));
+        if($this->request->is('post')) {
+            if($this->Auth->logout()) {
+                $this->Flash->success(__('Je bent succesvol uitgelogd!'));
+                return $this->redirect('/');
             }
         }
-        $this->set('title', __('Maak een account!'));
-        $this->set(compact('user', 'schools'));
-        $this->set('_serialize', ['user']);
+        else {
+            throw new NotFoundException();
+        }
     }
 
 }

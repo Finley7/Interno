@@ -51,26 +51,34 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/', ['controller' => 'Pages', 'action' => 'landing', 'home']);
 
 
-    /**
-     * Connect catchall routes for all controllers.
-     *
-     * Using the argument `DashedRoute`, the `fallbacks` method is a shortcut for
-     *    `$routes->connect('/:controller', ['action' => 'index'], ['routeClass' => 'DashedRoute']);`
-     *    `$routes->connect('/:controller/:action/*', [], ['routeClass' => 'DashedRoute']);`
-     *
-     * Any route class can be used with this method, such as:
-     * - DashedRoute
-     * - InflectedRoute
-     * - Route
-     * - Or your own route class
-     *
-     * You can remove these routes once you've connected the
-     * routes you want in your application.
-     */
+  
     $routes->fallbacks('DashedRoute');
 });
 
 Router::prefix('student', function(RouteBuilder $routes){
+    $routes->fallbacks('DashedRoute');
+    $routes->connect('/dashboard', ['controller' => 'Pages', 'action' => 'dashboard']);
+    $routes->connect('/register', ['controller' => 'Users', 'action' => 'add']);
+
+    $routes->connect('/profile/:username', [
+        'controller' => 'Users',
+        'action' => 'view',
+    ], [
+        'pass' => ['username']
+    ]);
+});
+
+Router::prefix('company', function(RouteBuilder $routes){
+
+    $routes->connect('/dashboard', ['controller' => 'Pages', 'action' => 'dashboard']);
+
+    $routes->fallbacks('DashedRoute');
+    
+});
+
+Router::prefix('school', function(RouteBuilder $routes){
+    $routes->connect('/dashboard', ['controller' => 'Pages', 'action' => 'dashboard']);
+    
     $routes->fallbacks('DashedRoute');
 });
 
