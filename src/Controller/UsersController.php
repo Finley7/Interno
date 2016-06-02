@@ -51,18 +51,19 @@ class UsersController extends AppController
             $this->Flash->error(__('Ongeldige gebruikersnaam/wachtwoord combinatie!'));
         }
         $this->set('title', 'Aanmelden');
-
     }
 
     public function logout()
     {
         if($this->request->is('post')) {
-            if($this->Auth->logout()) {
+            if($this->Auth->logout())
+            {
                 $this->Flash->success(__('Je bent succesvol uitgelogd!'));
                 return $this->redirect('/');
             }
         }
-        else {
+        else
+        {
             throw new NotFoundException();
         }
     }

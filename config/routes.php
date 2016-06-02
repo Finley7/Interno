@@ -51,7 +51,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/', ['controller' => 'Pages', 'action' => 'landing', 'home']);
 
 
-  
+
     $routes->fallbacks('DashedRoute');
 });
 

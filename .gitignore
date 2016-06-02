@@ -86,3 +86,4 @@ $RECYCLE.BIN/
 /app/Config/core.php
 /app/Config/database.php
 /vendors/*
+composer.lock
