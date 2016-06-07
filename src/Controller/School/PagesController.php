@@ -34,7 +34,12 @@ class PagesController extends AppController
 
     public function dashboard()
     {
+        $this->loadModel('Announcements');
+
+        $blogs = $this->Announcements->find('all')->contain(['Authors'])->order(['created' => 'desc']);
+
         $this->set('title', 'Scholen dashboard');
+        $this->set(compact('blogs'));
     }
 
 }

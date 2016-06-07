@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default menu-header-student">
+<nav class="navbar navbar-default menu-header">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu-collapse"
@@ -8,7 +8,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <?= $this->Html->link('Interno student', '/', ['class' => 'navbar-brand', 'style' => 'color:#fff;']); ?>
+            <?= $this->Html->link(__('Interno gebruikerspaneel'), '/', ['class' => 'navbar-brand', 'style' => 'color:#fff;']); ?>
         </div>
         <div class="collapse navbar-collapse" id="menu-collapse">
             <ul class="nav navbar-nav">

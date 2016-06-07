@@ -31,7 +31,6 @@
 <body>
 <?= $this->Flash->render() ?>
 <?= $this->Flash->render('auth') ?>
-
 <?php
     if(!isset($user)) {
         echo $this->element('Menu/unauthorized');

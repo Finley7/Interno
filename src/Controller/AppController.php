@@ -46,6 +46,9 @@ class AppController extends Controller
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
         $this->loadComponent('Csrf');
+        $this->loadComponent('Notification');
+
+        $this->loadModel('Notifications');
 
         $this->loadComponent('Auth', [
             'authError' => __("Je hebt geen toegang om deze locatie te bezoeken, of je moet ingelogd zijn!"),
@@ -68,8 +71,18 @@ class AppController extends Controller
         ]);
 
         if ($this->Auth->user()) {
+
             $user = new User($this->Auth->user());
-            $this->set('user', $user);
+            $notifications = $this->Notifications->findByUserId($user->id);
+
+            $this->set(compact('user', 'notifications'));
+            
+            $unreadNotifications = $notifications->find('all')->where(['is_read' => false]);
+
+            if($unreadNotifications->count() > 0) {
+                $this->Flash->success(__('Je hebt {0} ongelezen notificaties', $unreadNotifications->count()));
+            }
+
             if ($this->Auth->user('primary_role') == 3) {
                 $this->Flash->error(__('Je bent verbannen!'));
                 throw new ForbiddenException('Je bent verbannen');

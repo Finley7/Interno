@@ -15,7 +15,9 @@
                     'escape' => false
                 ]
             ); ?>
-            <?= $this->Html->link('<i class="fa fa-sticky-note"></i> ' . __('Notificaties'),
+            <?= $this->Html->link('<i class="fa fa-sticky-note"></i> ' . __('Notificaties {0}',
+                    "<span class=\"badge\">{$notifications->where(['is_read' => false])->count()}</span>"
+                ),
                 [
                     'controller' => 'Notifications',
                     'action' => 'index',

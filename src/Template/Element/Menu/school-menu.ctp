@@ -26,9 +26,9 @@
                     'escape' => false
                 ]
             ); ?>
-            <?= $this->Html->link('<i class="fa fa-archive"></i> ' . __('Artikel beheer'),
+            <?= $this->Html->link('<i class="fa fa-archive"></i> ' . __('Aankondigingen beheer'),
                 [
-                    'controller' => 'Blogs',
+                    'controller' => 'Announcements',
                     'action' => 'index',
                     'prefix' => 'school',
                 ],

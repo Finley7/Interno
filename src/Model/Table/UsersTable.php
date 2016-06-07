@@ -52,6 +52,16 @@ class UsersTable extends Table
             'foreignKey' => 'id',
             'joinType' => 'INNER'
         ]);
+
+        $this->hasMany('Announcements', [
+            'foreignKey' => 'id',
+            'joinType' => 'LEFT'
+        ]);
+
+        $this->hasMany('Notifications', [
+            'foreignKey' => 'id',
+            'joinType' => 'LEFT'
+        ]);
     }
 
     /**

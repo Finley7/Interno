@@ -34,7 +34,13 @@ class PagesController extends AppController
 
     public function dashboard()
     {
+        $this->loadModel('Announcements');
+
+        $announcements = $this->Announcements->find('all')->contain(['Authors']);
         $this->set('title', 'Studenten dashboard');
+        
+
+        $this->set('announcements', $this->paginate($announcements));
     }
 
 }
