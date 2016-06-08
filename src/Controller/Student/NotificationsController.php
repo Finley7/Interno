@@ -10,6 +10,7 @@ namespace App\Controller\Student;
 
 
 use App\Controller\AppController;
+use Cake\Network\Exception\NotFoundException;
 
 class NotificationsController extends AppController
 {
@@ -22,6 +23,11 @@ class NotificationsController extends AppController
 
     public function mark($id) {
         $notification = $this->Notifications->get($id);
+
+        if(is_null($notification))
+        {
+            throw new NotFoundException(__("Notificatie niet gevonden!"));
+        }
 
         if($notification->is_read) {
             $this->Flash->error(__('Dit bericht is al gemarkeerd als gelezen!'));

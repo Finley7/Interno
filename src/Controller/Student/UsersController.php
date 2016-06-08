@@ -46,6 +46,7 @@ class UsersController extends AppController
         $user = $this->Users->newEntity([
             'associated' => [
                 'Roles',
+                'StudentProfile'
             ]
         ]);
 
@@ -56,21 +57,26 @@ class UsersController extends AppController
             $this->request->data['roles']['_ids'] = [5];
             $this->request->data['username'] = h($this->request->data['username']);
             $this->request->data['primary_role'] = 5;
+            $this->request->data['student_profile']['updated'] = 0;
             $user = $this->Users->patchEntity($user, $this->request->data, [
                 'associated' => [
                     'Roles',
+                    'StudentProfile'
                 ]
             ]);
+
             if ($this->Users->save($user, [
                 'associated' => [
                     'Roles',
+                    'StudentProfile'
                 ]
             ])
             ) {
                 $this->Flash->success(__('Het account is aangemaakt. Je kunt nu inloggen!'));
                 return $this->redirect([
                     'controller' => 'users',
-                    'action' => 'login'
+                    'action' => 'login',
+                    'prefix' => false
                 ]);
             } else {
                 $this->Flash->error(__('Er is iets fout gegaan tijdens het registreren van het account!'));
@@ -83,6 +89,32 @@ class UsersController extends AppController
 
     public function settings() {
 
+        $profile = $this->Users->get($this->Auth->user('id'), ['contain' => ['StudentProfile']]);
+
+        if(is_null($profile)) {
+            throw new NotFoundException(__("Gebruiker niet gevonden!"));
+        }
+
+        if($this->request->is(['patch', 'put', 'post'])) {
+            $profile->student_profile->updated = 1;
+
+            $profile = $this->Users->patchEntity($profile, $this->request->data, [
+                'associated' => [
+                    'StudentProfile'
+                ]
+            ]);
+
+            if($this->Users->save($profile, ['associated' => ['StudentProfile']])) {
+                $this->Flash->success(__('Profiel is opgeslagen!'));
+                return $this->redirect(['controller' => 'users', 'action' => 'settings']);
+            }
+            else {
+                $this->Flash->error(__('Profiel kon niet opgeslagen worden!'));
+            }
+        }
+
+        $this->set('title', __('Instellingen aanpassen'));
+        $this->set(compact('profile'));
     }
 
     public function avatar()
@@ -122,6 +154,17 @@ class UsersController extends AppController
         }
         $this->set('editUser', $editUser);
         $this->set('title', 'Avatar aanpassen');
+    }
+
+    public function view($name) {
+        $profile = $this->Users->findByUsername($name)->contain(['StudentProfile'])->first();
+
+        if(is_null($profile)) {
+            throw new NotFoundException(__("Gebruiker niet gevonden!"));
+        }
+
+        $this->set('title', __('Profiel van {0}', $profile->username));
+        $this->set(compact('profile'));
     }
 
 }

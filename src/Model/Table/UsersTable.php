@@ -62,6 +62,11 @@ class UsersTable extends Table
             'foreignKey' => 'id',
             'joinType' => 'LEFT'
         ]);
+
+        $this->hasOne('StudentProfile', [
+            'foreignKey' => 'user_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**

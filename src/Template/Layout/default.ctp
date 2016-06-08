@@ -16,6 +16,7 @@
     <?= $this->Html->css('font-awesome.min.css') ?>
     <?= $this->Html->css('amaran.min.css'); ?>
     <?= $this->Html->css('animate.min.css'); ?>
+    <?= $this->Html->css('wbbtheme.css'); ?>
     <?= $this->Html->css('base.css') ?>
 
     <?= $this->fetch('meta') ?>
@@ -24,6 +25,7 @@
 
     <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
 
+    <?= $this->Html->script('jquery.wysibb.min'); ?>
     <?= $this->Html->script('bootstrap.min'); ?>
     <?= $this->Html->script('jquery.amaran.min'); ?>
 
