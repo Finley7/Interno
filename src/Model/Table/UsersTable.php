@@ -49,8 +49,8 @@ class UsersTable extends Table
         ]);
 
         $this->belongsTo('Schools', [
-            'foreignKey' => 'id',
-            'joinType' => 'INNER'
+            'foreignKey' => 'school_id',
+            'joinType' => 'LEFT'
         ]);
 
         $this->hasMany('Announcements', [

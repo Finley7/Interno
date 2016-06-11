@@ -9,7 +9,6 @@
             <?= $this->Html->link('<i class="fa fa-file-image-o"></i> ' . __('Avatar aanpassen'), ['action' => 'avatar'], ['class' => 'btn btn-success', 'escape' => false]); ?>
             <?= $this->Html->link('<i class="fa fa-lock"></i> ' . __('Wachtwoord aanpassen'), ['action' => 'password'], ['class' => 'btn btn-warning', 'escape' => false]); ?>
             <?= $this->Html->link('<i class="fa fa-image"></i> ' . __('Omslagfoto aanpassen'), ['action' => 'password'], ['class' => 'btn btn-primary', 'escape' => false]); ?>
-            <?= $this->Html->link('<i class="fa fa-lock"></i> ' . __('Schoolinformatie aanpassen'), ['action' => 'password'], ['class' => 'btn btn-warning', 'escape' => false]); ?>
             <hr>
             <legend>Profiel instellingen</legend>
             <?= $this->Form->create($profile); ?>
@@ -38,7 +37,7 @@
                 <fieldset class="form-group">
                     <label for="student_profile[interests]">Interesses</label>
                     <br>
-                    <?= $this->Form->textarea('student_profile.interests', ['class' => 'form-control']); ?>
+                    <textarea name="student_profile[interests]" id="interests" class="form-control" rows="5"><?= isset($profile->student_profile->interests) ? $profile->student_profile->interests : ''; ?></textarea>
                     <span class="text-muted"><?= __('Je interesses'); ?></span>
                 </fieldset>
             <?= $this->Form->submit(__('Opslaan'), ['class' => 'btn btn-success']); ?>
@@ -47,8 +46,12 @@
     </div>
 </div>
 <script>
-    var wbbOpt = {
+    var biography = {
         buttons: "bold,italic,underline,|,link,fontsize,|,strike,sub,sup"
     }
-    $('#biography').wysibb(wbbOpt);
+    var interests = {
+        buttons: "bold,italic,underline,|,link,fontsize,|,bullist,numlist"
+    }
+    $('#biography').wysibb(biography);
+    $('#interests').wysibb(interests);
 </script>

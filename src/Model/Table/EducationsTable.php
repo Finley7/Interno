@@ -1,18 +1,18 @@
 <?php
 namespace App\Model\Table;
 
-use App\Model\Entity\School;
+use App\Model\Entity\Education;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * School Model
+ * Educations Model
  *
- * @property \Cake\ORM\Association\HasMany $Users
+ * @property \Cake\ORM\Association\BelongsTo $Schools
  */
-class SchoolsTable extends Table
+class EducationsTable extends Table
 {
 
     /**
@@ -25,17 +25,13 @@ class SchoolsTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('schools');
-        $this->displayField('name');
+        $this->table('educations');
+        $this->displayField('title');
         $this->primaryKey('id');
 
-        $this->hasMany('Users', [
-            'foreignKey' => 'school_id'
-        ]);
-
-        $this->hasMany('Educations', [
+        $this->belongsTo('Schools', [
             'foreignKey' => 'school_id',
-            'joinType' => 'INNER'
+            'joinType' => 'LEFT'
         ]);
     }
 
@@ -49,11 +45,15 @@ class SchoolsTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmpty('id', 'create')
+            ->add('id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
-            ->requirePresence('name', 'create')
-            ->notEmpty('name');
+            ->requirePresence('title', 'create')
+            ->notEmpty('title');
+
+        $validator
+            ->allowEmpty('info');
 
         return $validator;
     }
@@ -67,7 +67,8 @@ class SchoolsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['user_id'], 'Users'));
+        $rules->add($rules->isUnique(['id']));
+        $rules->add($rules->existsIn(['school_id'], 'Schools'));
         return $rules;
     }
 }

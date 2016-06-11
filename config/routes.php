@@ -59,6 +59,7 @@ Router::prefix('student', function(RouteBuilder $routes){
     $routes->fallbacks('DashedRoute');
     $routes->connect('/dashboard', ['controller' => 'Pages', 'action' => 'dashboard']);
     $routes->connect('/register', ['controller' => 'Users', 'action' => 'add']);
+    $routes->connect('/settings/global', ['controller' => 'Users', 'action' => 'settings']);
     $routes->connect('/settings/avatar', ['controller' => 'Users', 'action' => 'avatar']);
     $routes->connect('/settings/password', ['controller' => 'Users', 'action' => 'password']);
 

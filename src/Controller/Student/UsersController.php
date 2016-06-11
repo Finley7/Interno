@@ -157,11 +157,29 @@ class UsersController extends AppController
     }
 
     public function view($name) {
-        $profile = $this->Users->findByUsername($name)->contain(['StudentProfile'])->first();
+        $profile = $this->Users->findByUsername($name)->contain(
+            [
+                'PrimaryRole',
+                'StudentProfile',
+                'Schools' => [
+                    'Educations'
+                ]
+            ]
+        )->first();
 
         if(is_null($profile)) {
             throw new NotFoundException(__("Gebruiker niet gevonden!"));
         }
+
+        if($profile->id == $this->Auth->user('id') && $profile->student_profile->updated == false) {
+            $this->Flash->error(__("Je kunt pas je profiel bekijken als je je instellingen voltooid hebt!"));
+            return $this->redirect(['action' => 'settings']);
+        }
+        elseif($profile->id != $this->Auth->user('id') && $profile->student_profile->updated == false) {
+            $this->Flash->error(__("Je kunt dit profiel pas bekijken als het profiel compleet is!"));
+            return $this->redirect('/');
+        }
+
 
         $this->set('title', __('Profiel van {0}', $profile->username));
         $this->set(compact('profile'));
